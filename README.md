@@ -1,19 +1,19 @@
-# LOVE AI — OpenEnv Environment
+---
+title: LOVE vH AI
+emoji: robot
+colorFrom: blue
+colorTo: green
+sdk: docker
+---
 
-## Overview
-LOVE is an adaptive AI assistant trained using reinforcement learning.
+# LOVE vH
 
-## Tasks
-- Easy: basic command handling
-- Medium: clarification & follow-ups
-- Hard: multi-step reasoning
+Adaptive AI Environment using Reinforcement Learning.
 
-## Reward System
-Combines:
-- Accuracy
-- Relevance
-- Tone
-- Human feedback
+## Features
+- Reward shaping
+- Context-aware responses
+- Task-based evaluation
 
 ## Run
 python inference.py

@@ -36,10 +36,10 @@ class RewardSystem:
         response = str(action.get("response", "")).strip()
         tone = str(action.get("tone", "friendly"))
 
-        # ── Length bonus ─────────────────────────────
+        #    Length bonus                              
         length_bonus = 1.5 if len(response.split()) > 8 else 0.0
 
-        # ── Sub-checks ───────────────────────────────
+        #    Sub-checks                                
         acc = self._accuracy.check(
             response=response,
             expected_keywords=user_msg.expected_keywords,
@@ -57,10 +57,10 @@ class RewardSystem:
             user_mood=getattr(user_msg, "mood", "happy"),
         )
 
-        # ── Human feedback ───────────────────────────
+        #    Human feedback                            
         human_score = self._human.evaluate(response, user_msg)
 
-        # ── Accuracy scoring ─────────────────────────
+        #    Accuracy scoring                          
         if acc.get("correct", False):
             accuracy_reward = 12
         elif acc.get("partial", False):
@@ -68,7 +68,7 @@ class RewardSystem:
         else:
             accuracy_reward = -12
 
-        # ── Relevance scoring ────────────────────────
+        #    Relevance scoring                         
         if rel.get("relevant", False):
             relevance_reward = 8
         elif rel.get("partial", False):
@@ -76,7 +76,7 @@ class RewardSystem:
         else:
             relevance_reward = -5
 
-        # ── Tone scoring ─────────────────────────────
+        #    Tone scoring                              
         tone_quality = ton.get("quality", "neutral")
         user_mood = getattr(user_msg, "mood", "happy")
 
@@ -93,7 +93,7 @@ class RewardSystem:
         else:
             tone_reward = -8
 
-        # ── Repetition penalty (strong) ───────────────
+        #    Repetition penalty (strong)                
         repetition_penalty = 0
 
         if context:
@@ -107,7 +107,7 @@ class RewardSystem:
             except Exception:
                 pass
 
-        # ── Low diversity penalty ─────────────────────
+        #    Low diversity penalty                      
         if context:
             recent_responses = [
                 t.get("action", {}).get("response", "")
@@ -117,7 +117,7 @@ class RewardSystem:
             if len(set(recent_responses)) <= 2:
                 repetition_penalty -= 5
 
-        # ── Generic response penalty (VERY IMPORTANT) ─
+        #    Generic response penalty (VERY IMPORTANT)  
         generic_phrases = [
             "let me help you",
             "i'm here to help",
@@ -128,23 +128,23 @@ class RewardSystem:
         if any(p in response.lower() for p in generic_phrases):
             repetition_penalty -= 2
 
-        # ── Follow-up penalty ────────────────────────
+        #    Follow-up penalty                         
         followup_penalty = 0
 
         if getattr(user_msg, "topic", "") == "follow_up":
             if "what else" in response.lower():
                 followup_penalty = -3
 
-        # ── Smart action bonus ───────────────────────
+        #    Smart action bonus                        
         if any(word in response.lower() for word in ["press", "click", "open", "restart"]):
             smart_bonus = 3
         else:
             smart_bonus = 0
 
-        # ── Combine penalties ────────────────────────
+        #    Combine penalties                         
         total_penalty = repetition_penalty + followup_penalty
 
-        # ── Final reward ─────────────────────────────
+        #    Final reward                              
         total = (
             accuracy_reward
             + relevance_reward

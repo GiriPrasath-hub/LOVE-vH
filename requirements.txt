@@ -1,4 +1,4 @@
-# love_vH — requirements
+# love_vH - requirements
 # Pure Python standard library only.
 # No external dependencies required.
 #

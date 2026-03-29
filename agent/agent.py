@@ -21,7 +21,6 @@ class LoveAgent:
 
         self.last_action = None
 
-    # ── ACTION ────────────────────────────────────────────────
 
     def act(self, state: dict[str, Any]) -> dict[str, Any]:
 
@@ -46,7 +45,6 @@ class LoveAgent:
 
         return action
 
-    # ── LEARNING ─────────────────────────────────────────────
 
     def observe_reward(self, reward: float):
 
@@ -59,13 +57,11 @@ class LoveAgent:
         self.epsilon *= 0.98
         self.epsilon = max(self.epsilon, self.min_epsilon)
     
-    # ── RESET ────────────────────────────────────────────────
 
     def reset_stats(self) -> None:
         self._step_count = 0
         self._total_reward = 0.0
 
-    # ── PROPERTIES ───────────────────────────────────────────
 
     @property
     def total_reward(self) -> float:

@@ -1,5 +1,5 @@
 # ================================================================
-#  love_vH — environment/task_manager.py
+#  love_vH - environment/task_manager.py
 #  Enhanced TaskManager with better episode control
 # ================================================================
 
@@ -20,12 +20,12 @@ class Task:
     description   : str
 
 
-# ── Task definitions ──────────────────────────────────────────
+#    Task definitions                                           
 
 _TASKS: dict[Difficulty, Task] = {
     "easy": Task(
         difficulty    = "easy",
-        max_turns     = 3,   # 🔥 increased from 2
+        max_turns     = 3,   #  increased from 2
         done_on_first = True,
         description   = "Simple direct request. Agent must respond accurately.",
     ),
@@ -57,11 +57,11 @@ class TaskManager:
         self._turn     = 0
         self._task: Task | None = None
 
-        # 🔥 NEW: control parameters
+        #  NEW: control parameters
         self.min_turns_before_done = 2
         self.reward_threshold = 20   # high-quality response threshold
 
-    # ── Public API ────────────────────────────────────────────
+    #    Public API                                             
 
     def new_episode(self) -> Task:
         self._episode += 1
@@ -81,20 +81,20 @@ class TaskManager:
         Rules:
         - Always end if max_turns reached
         - Easy tasks: can end early ONLY IF:
-            ✔ correct response
-            ✔ high reward
-            ✔ minimum turns reached
+             correct response
+             high reward
+             minimum turns reached
         - Medium/Hard: always run full episode
         """
 
         if self._task is None:
             return True
 
-        # ✅ Rule 1: max turns
+        #  Rule 1: max turns
         if self._turn >= self._task.max_turns:
             return True
 
-        # ✅ Rule 2: early stop (ONLY for easy)
+        #  Rule 2: early stop (ONLY for easy)
         if self._task.done_on_first:
             if (
                 correct
@@ -105,7 +105,7 @@ class TaskManager:
 
         return False
 
-    # ── Properties ────────────────────────────────────────────
+    #    Properties                                             
 
     @property
     def current_task(self) -> Task | None:
@@ -123,7 +123,7 @@ class TaskManager:
     def episode(self) -> int:
         return self._episode
 
-    # ── Internal ──────────────────────────────────────────────
+    #    Internal                                               
 
     def _sample_difficulty(self) -> Difficulty:
         difficulties = list(self._weights.keys())

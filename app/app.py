@@ -4,10 +4,10 @@ from environment.env import LoveEnv
 from agent.agent import LoveAgent
 from reward.reward_system import RewardSystem
 
-# ✅ CREATE APP FIRST
+#  CREATE APP FIRST
 app = Flask(__name__, template_folder="templates")
 
-# ✅ INIT SYSTEM
+#  INIT SYSTEM
 env = LoveEnv()
 agent = LoveAgent()
 reward_system = RewardSystem()
@@ -15,13 +15,13 @@ reward_system = RewardSystem()
 state = env.reset()
 
 
-# ✅ HOME ROUTE
+#  HOME ROUTE
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# ✅ CHAT ROUTE
+#  CHAT ROUTE
 @app.route("/chat", methods=["POST"])
 def chat():
     global state
@@ -47,6 +47,6 @@ def chat():
     })
 
 
-# ✅ RUN APP
+#  RUN APP
 if __name__ == "__main__":
     app.run(debug=True)
