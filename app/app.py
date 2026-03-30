@@ -16,9 +16,15 @@ state = env.reset()
 
 
 #  HOME ROUTE
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
-    return "LOVE vH is running"
+    return "LOVE vH is running "
+
+
+#  CATCH ALL ROUTE (IMPORTANT)
+@app.route("/<path:path>")
+def catch_all(path):
+    return "LOVE vH is running "
 
 
 #  CHAT ROUTE
