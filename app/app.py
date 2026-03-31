@@ -8,11 +8,10 @@ from reward.reward_system import RewardSystem
 app = Flask(__name__, template_folder="templates")
 
 #  INIT SYSTEM
-env = LoveEnv()
-agent = LoveAgent()
-reward_system = RewardSystem()
-
-state = env.reset()
+env = None
+agent = None
+reward_system = None
+state = None
 
 
 #  HOME ROUTE
@@ -50,20 +49,22 @@ def catch_all(path):
 #  CHAT ROUTE
 @app.route("/chat", methods=["POST"])
 def chat():
-    global state
+    global state, env, agent, reward_system
+
+    # Lazy init (VERY IMPORTANT)
+    if env is None:
+        print("🔥 Initializing system...")
+        env = LoveEnv()
+        agent = LoveAgent()
+        reward_system = RewardSystem()
+        state = env.reset()
 
     user_input = request.json.get("message", "")
-
-    # Update state with user message
     state["user_message"] = user_input
 
-    # Agent acts
     action = agent.act(state)
-
-    # Environment step
     next_state, reward, done, info = env.step(action)
 
-    # Update state
     state = next_state
 
     return jsonify({
