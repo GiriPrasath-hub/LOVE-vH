@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from openenv.environment import OpenEnvWrapper
 from fastapi.responses import JSONResponse
+from openenv.environment import OpenEnvWrapper
 
 app = FastAPI()
 env = OpenEnvWrapper()
@@ -20,12 +20,3 @@ def step(action: dict):
 @app.get("/state")
 def state():
     return env.state()
-
-
-def main():
-    import uvicorn
-    uvicorn.run("server.app:app", host="0.0.0.0", port=8000)
-
-
-if __name__ == "__main__":
-    main()
